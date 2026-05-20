@@ -1,631 +1,299 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SMACO Tax Advisory Services - Solusi Konsultasi Pajak Profesional dan Terpercaya untuk Bisnis Anda">
-    <title>SMACO Tax Advisory Services - Konsultan Pajak Profesional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0b14">
+    <meta name="description" content="Lyps AI - Asisten AI generasi baru. Lebih cepat, lebih cerdas, lebih indah dari yang lain. Powered by GPT-4o, Claude, Gemini, dan DeepSeek.">
+    <title>Lyps AI — Asisten Cerdas Generasi Baru</title>
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%237c5cff'/><stop offset='1' stop-color='%2300d4ff'/></linearGradient></defs><rect width='64' height='64' rx='16' fill='url(%23g)'/><path d='M20 18v22a6 6 0 006 6h18' stroke='white' stroke-width='5' stroke-linecap='round' fill='none'/><circle cx='44' cy='22' r='5' fill='white'/></svg>">
+
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <div class="logo-text">
-                    <span class="logo-name">SMACO</span>
-                    <span class="logo-tagline">Tax Advisory</span>
-                </div>
-            </a>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link active">Beranda</a></li>
-                <li><a href="#about" class="nav-link">Tentang Kami</a></li>
-                <li><a href="#services" class="nav-link">Layanan</a></li>
-                <li><a href="#why-us" class="nav-link">Mengapa Kami</a></li>
-                <li><a href="#team" class="nav-link">Tim</a></li>
-                <li><a href="#contact" class="nav-link">Kontak</a></li>
-            </ul>
-            <a href="#contact" class="btn btn-primary nav-cta">Konsultasi Gratis</a>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+    <!-- Aurora Background -->
+    <div class="aurora" aria-hidden="true">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="aurora-grid"></div>
+    </div>
+
+    <!-- App Shell -->
+    <div class="app" id="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="brand" id="brandHome">
+                    <div class="brand-mark">
+                        <svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="bgrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#7c5cff"/>
+                                    <stop offset="1" stop-color="#00d4ff"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="64" height="64" rx="16" fill="url(#bgrad)"/>
+                            <path d="M20 18v22a6 6 0 006 6h18" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+                            <circle cx="44" cy="22" r="5" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">Lyps AI</span>
+                        <span class="brand-sub">Generasi Baru</span>
+                    </div>
+                </a>
+                <button class="icon-btn sidebar-collapse" id="sidebarCollapse" aria-label="Tutup sidebar" title="Tutup sidebar">
+                    <i class="fas fa-angles-left"></i>
+                </button>
+            </div>
+
+            <button class="new-chat-btn" id="newChatBtn">
+                <span class="new-chat-icon"><i class="fas fa-plus"></i></span>
+                <span>Chat Baru</span>
+                <kbd class="new-chat-kbd">Ctrl K</kbd>
             </button>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-bg">
-            <div class="hero-shape shape-1"></div>
-            <div class="hero-shape shape-2"></div>
-            <div class="hero-shape shape-3"></div>
-        </div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <span class="hero-badge"><i class="fas fa-star"></i> Konsultan Pajak Terpercaya #1</span>
-                    <h1 class="hero-title">
-                        Solusi Pajak <span class="text-gradient">Profesional</span> Untuk Bisnis Anda
+            <div class="sidebar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari percakapan..." aria-label="Cari percakapan">
+            </div>
+
+            <div class="sidebar-section-label">Riwayat</div>
+            <div class="conversation-list" id="conversationList">
+                <!-- Dinamis dari JS -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="footer-btn" id="exportBtn" title="Ekspor chat">
+                    <i class="fas fa-download"></i>
+                    <span>Ekspor</span>
+                </button>
+                <button class="footer-btn" id="clearAllBtn" title="Hapus semua">
+                    <i class="fas fa-trash-can"></i>
+                    <span>Hapus Semua</span>
+                </button>
+                <button class="footer-btn" id="shortcutsBtn" title="Pintasan keyboard">
+                    <i class="fas fa-keyboard"></i>
+                    <span>Pintasan</span>
+                </button>
+                <button class="footer-btn theme-toggle" id="themeToggle" title="Ubah tema">
+                    <i class="fas fa-moon theme-icon-dark"></i>
+                    <i class="fas fa-sun theme-icon-light"></i>
+                    <span>Tema</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main" id="main">
+            <header class="topbar">
+                <button class="icon-btn sidebar-open" id="sidebarOpen" aria-label="Buka sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="topbar-center">
+                    <button class="model-pill" id="modelPill" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="model-dot"></span>
+                        <span class="model-pill-text">
+                            <span class="model-pill-label">Model</span>
+                            <span class="model-pill-name" id="modelPillName">GPT-4o</span>
+                        </span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+
+                    <button class="persona-pill" id="personaPill" aria-haspopup="listbox" aria-expanded="false">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <span id="personaPillName">Cerdas</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="shareBtn" title="Bagikan">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="icon-btn" id="topNewChat" title="Chat Baru">
+                        <i class="fas fa-pen-to-square"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Welcome / Chat Area -->
+            <section class="chat-area" id="chatArea">
+                <div class="welcome" id="welcome">
+                    <div class="welcome-mark">
+                        <div class="welcome-mark-glow"></div>
+                        <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="wgrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#7c5cff"/>
+                                    <stop offset="0.5" stop-color="#ff5cf7"/>
+                                    <stop offset="1" stop-color="#00d4ff"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="64" height="64" rx="18" fill="url(#wgrad)"/>
+                            <path d="M20 18v22a6 6 0 006 6h18" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+                            <circle cx="44" cy="22" r="5" fill="white"/>
+                        </svg>
+                    </div>
+                    <h1 class="welcome-title">
+                        Halo, saya <span class="text-gradient">Lyps AI</span>
                     </h1>
-                    <p class="hero-description">
-                        SMACO Tax Advisory Services hadir sebagai mitra terpercaya dalam mengelola kewajiban perpajakan Anda. Kami memberikan layanan konsultasi pajak komprehensif dengan tim ahli berpengalaman dan tersertifikasi.
-                    </p>
-                    <div class="hero-actions">
-                        <a href="#contact" class="btn btn-primary">
-                            <i class="fas fa-calendar-check"></i> Konsultasi Gratis
-                        </a>
-                        <a href="#services" class="btn btn-outline">
-                            <i class="fas fa-arrow-right"></i> Lihat Layanan
-                        </a>
-                    </div>
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <h3 data-count="500">0</h3>
-                            <p>Klien Puas</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 data-count="15">0</h3>
-                            <p>Tahun Pengalaman</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 data-count="98">0</h3>
-                            <p>Tingkat Kepuasan (%)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="hero-card-main">
-                        <div class="card-header">
-                            <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                            <div>
-                                <h4>Laporan Pajak</h4>
-                                <p>Bulan Mei 2026</p>
-                            </div>
-                        </div>
-                        <div class="card-stats">
-                            <div class="card-stat">
-                                <span>Penghematan</span>
-                                <strong>Rp 250jt</strong>
-                            </div>
-                            <div class="card-stat">
-                                <span>Status</span>
-                                <strong class="status-success">Compliant</strong>
-                            </div>
-                        </div>
-                        <div class="card-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                            </div>
-                            <span>Pelaporan 95% Selesai</span>
-                        </div>
-                    </div>
-                    <div class="hero-card-floating card-1">
-                        <i class="fas fa-shield-check"></i>
-                        <span>Bersertifikat BKP</span>
-                    </div>
-                    <div class="hero-card-floating card-2">
-                        <i class="fas fa-award"></i>
-                        <span>Tim Profesional</span>
-                    </div>
-                    <div class="hero-card-floating card-3">
-                        <i class="fas fa-clock"></i>
-                        <span>Respon Cepat</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <p class="welcome-sub">Asisten cerdas yang lebih cepat, lebih akurat, dan lebih indah. Mau mulai dari mana hari ini?</p>
 
-    <!-- Trust Bar -->
-    <section class="trust-bar">
-        <div class="container">
-            <p class="trust-title">Dipercaya oleh berbagai perusahaan terkemuka</p>
-            <div class="trust-logos">
-                <div class="trust-item"><i class="fas fa-building"></i> Corporate Co.</div>
-                <div class="trust-item"><i class="fas fa-industry"></i> ManufactureID</div>
-                <div class="trust-item"><i class="fas fa-store"></i> RetailPlus</div>
-                <div class="trust-item"><i class="fas fa-laptop-code"></i> TechStart</div>
-                <div class="trust-item"><i class="fas fa-truck"></i> LogiTrans</div>
-                <div class="trust-item"><i class="fas fa-hospital"></i> MediCare</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-image">
-                    <div class="image-wrapper">
-                        <div class="image-card">
-                            <i class="fas fa-handshake"></i>
-                            <h4>Mitra Terpercaya</h4>
-                            <p>Membangun hubungan jangka panjang dengan setiap klien</p>
-                        </div>
-                        <div class="image-decoration"></div>
-                    </div>
-                </div>
-                <div class="about-content">
-                    <span class="section-tag">Tentang SMACO</span>
-                    <h2 class="section-title">Mitra Strategis untuk <span class="text-gradient">Kesuksesan Pajak</span> Bisnis Anda</h2>
-                    <p class="section-description">
-                        SMACO Tax Advisory Services adalah firma konsultan pajak profesional yang berdedikasi untuk membantu bisnis dan individu dalam mengelola kewajiban perpajakan secara efektif dan efisien sesuai dengan peraturan perpajakan yang berlaku di Indonesia.
-                    </p>
-                    <div class="about-features">
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-bullseye"></i></div>
-                            <div>
-                                <h4>Visi Kami</h4>
-                                <p>Menjadi konsultan pajak terdepan yang memberikan solusi inovatif dan terpercaya.</p>
+                    <div class="suggestions" id="suggestions">
+                        <button class="suggestion" data-prompt="Buatkan rencana belajar coding 30 hari untuk pemula yang ingin jadi web developer.">
+                            <div class="suggestion-icon" style="--c1:#7c5cff;--c2:#00d4ff"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="suggestion-text">
+                                <strong>Rencana belajar 30 hari</strong>
+                                <span>Roadmap jadi web developer dari nol</span>
                             </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-rocket"></i></div>
-                            <div>
-                                <h4>Misi Kami</h4>
-                                <p>Memberikan layanan konsultasi pajak berkualitas tinggi dengan integritas dan profesionalisme.</p>
-                            </div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon"><i class="fas fa-heart"></i></div>
-                            <div>
-                                <h4>Nilai Kami</h4>
-                                <p>Integritas, Profesionalisme, Kepercayaan, dan Komitmen terhadap kepuasan klien.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Layanan Kami</span>
-                <h2 class="section-title">Solusi Pajak <span class="text-gradient">Komprehensif</span></h2>
-                <p class="section-description">
-                    Kami menyediakan beragam layanan konsultasi pajak yang dirancang untuk memenuhi kebutuhan unik setiap klien.
-                </p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h3>Tax Compliance</h3>
-                    <p>Penyusunan dan pelaporan SPT bulanan dan tahunan untuk memastikan kepatuhan penuh terhadap peraturan perpajakan.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> SPT Masa PPN & PPh</li>
-                        <li><i class="fas fa-check"></i> SPT Tahunan Badan</li>
-                        <li><i class="fas fa-check"></i> SPT Tahunan Orang Pribadi</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="service-card featured">
-                    <div class="featured-badge">Populer</div>
-                    <div class="service-icon"><i class="fas fa-calculator"></i></div>
-                    <h3>Tax Planning</h3>
-                    <p>Strategi perencanaan pajak yang efektif untuk mengoptimalkan beban pajak bisnis Anda secara legal.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Strategi Optimasi Pajak</li>
-                        <li><i class="fas fa-check"></i> Restrukturisasi Bisnis</li>
-                        <li><i class="fas fa-check"></i> Tax Saving Solutions</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-search-dollar"></i></div>
-                    <h3>Tax Audit & Review</h3>
-                    <p>Pendampingan dalam menghadapi pemeriksaan pajak dan review komprehensif terhadap aspek perpajakan.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Pemeriksaan Pajak</li>
-                        <li><i class="fas fa-check"></i> Tax Diagnostic Review</li>
-                        <li><i class="fas fa-check"></i> Pendampingan Audit</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-gavel"></i></div>
-                    <h3>Tax Dispute</h3>
-                    <p>Penanganan sengketa pajak mulai dari keberatan, banding, hingga peninjauan kembali di pengadilan pajak.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> Keberatan Pajak</li>
-                        <li><i class="fas fa-check"></i> Banding Pengadilan Pajak</li>
-                        <li><i class="fas fa-check"></i> Peninjauan Kembali</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-globe"></i></div>
-                    <h3>Transfer Pricing</h3>
-                    <p>Penyusunan dokumentasi transfer pricing sesuai dengan standar OECD dan peraturan perpajakan Indonesia.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> TP Documentation</li>
-                        <li><i class="fas fa-check"></i> Master File & Local File</li>
-                        <li><i class="fas fa-check"></i> Country-by-Country Report</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    <h3>Tax Training</h3>
-                    <p>Program pelatihan dan workshop perpajakan untuk meningkatkan kapasitas tim internal perusahaan Anda.</p>
-                    <ul class="service-features">
-                        <li><i class="fas fa-check"></i> In-House Training</li>
-                        <li><i class="fas fa-check"></i> Public Workshop</li>
-                        <li><i class="fas fa-check"></i> Tax Update Seminar</li>
-                    </ul>
-                    <a href="#contact" class="service-link">Pelajari Lebih Lanjut <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Us Section -->
-    <section class="why-us" id="why-us">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Mengapa Memilih Kami</span>
-                <h2 class="section-title">Keunggulan <span class="text-gradient">SMACO</span></h2>
-                <p class="section-description">
-                    Komitmen kami untuk memberikan layanan terbaik membedakan kami dari yang lain.
-                </p>
-            </div>
-            <div class="why-grid">
-                <div class="why-card">
-                    <div class="why-number">01</div>
-                    <div class="why-icon"><i class="fas fa-user-tie"></i></div>
-                    <h3>Tim Profesional Bersertifikat</h3>
-                    <p>Konsultan pajak bersertifikat BKP (Brevet Konsultan Pajak) dengan pengalaman lebih dari 15 tahun.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-number">02</div>
-                    <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Kerahasiaan Terjamin</h3>
-                    <p>Kami menjunjung tinggi etika profesi dan menjamin kerahasiaan informasi setiap klien.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-number">03</div>
-                    <div class="why-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    <h3>Respon Cepat</h3>
-                    <p>Tim kami siap memberikan respon yang cepat dan solusi tepat untuk setiap permasalahan pajak.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-number">04</div>
-                    <div class="why-icon"><i class="fas fa-balance-scale"></i></div>
-                    <h3>Solusi Sesuai Regulasi</h3>
-                    <p>Setiap solusi yang kami berikan selalu sesuai dengan peraturan perpajakan terbaru.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-number">05</div>
-                    <div class="why-icon"><i class="fas fa-hand-holding-usd"></i></div>
-                    <h3>Biaya Transparan</h3>
-                    <p>Biaya jasa yang kompetitif dan transparan tanpa adanya biaya tersembunyi.</p>
-                </div>
-                <div class="why-card">
-                    <div class="why-number">06</div>
-                    <div class="why-icon"><i class="fas fa-sync-alt"></i></div>
-                    <h3>Update Berkala</h3>
-                    <p>Memberikan informasi update peraturan perpajakan terbaru secara berkala kepada klien.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="team" id="team">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Tim Kami</span>
-                <h2 class="section-title">Para <span class="text-gradient">Ahli Pajak</span> Profesional</h2>
-                <p class="section-description">
-                    Didukung oleh tim konsultan pajak berpengalaman dan bersertifikat untuk memberikan layanan terbaik.
-                </p>
-            </div>
-            <div class="team-grid">
-                <div class="team-card">
-                    <div class="team-image">
-                        <div class="team-avatar"><i class="fas fa-user"></i></div>
-                        <div class="team-social">
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-info">
-                        <h3>Dr. Suharto, S.E., M.Ak.</h3>
-                        <span class="team-role">Managing Partner</span>
-                        <p>Konsultan pajak senior dengan pengalaman 20+ tahun di bidang perpajakan korporasi.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <div class="team-image">
-                        <div class="team-avatar"><i class="fas fa-user"></i></div>
-                        <div class="team-social">
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-info">
-                        <h3>Maria Anggraini, S.E., BKP</h3>
-                        <span class="team-role">Senior Tax Consultant</span>
-                        <p>Spesialis transfer pricing dan perpajakan internasional dengan pengalaman multinasional.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <div class="team-image">
-                        <div class="team-avatar"><i class="fas fa-user"></i></div>
-                        <div class="team-social">
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-info">
-                        <h3>Budi Santoso, S.E., Ak., CA</h3>
-                        <span class="team-role">Tax Dispute Manager</span>
-                        <p>Ahli sengketa pajak dengan track record sukses di Pengadilan Pajak dan Mahkamah Agung.</p>
-                    </div>
-                </div>
-                <div class="team-card">
-                    <div class="team-image">
-                        <div class="team-avatar"><i class="fas fa-user"></i></div>
-                        <div class="team-social">
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                    <div class="team-info">
-                        <h3>Linda Kusuma, S.E., M.Si.</h3>
-                        <span class="team-role">Tax Compliance Manager</span>
-                        <p>Ahli compliance dan pelaporan pajak untuk perusahaan skala menengah hingga besar.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Testimoni</span>
-                <h2 class="section-title">Apa Kata <span class="text-gradient">Klien Kami</span></h2>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"SMACO membantu kami mengoptimalkan strategi perpajakan dan menghemat biaya pajak secara signifikan. Tim mereka sangat profesional dan responsif."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">AS</div>
-                        <div>
-                            <h4>Andi Setiawan</h4>
-                            <span>CEO, PT Maju Bersama</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Pendampingan SMACO selama pemeriksaan pajak sangat luar biasa. Mereka memberikan solusi tepat dan menyelesaikan masalah dengan baik."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">DR</div>
-                        <div>
-                            <h4>Diana Rahmawati</h4>
-                            <span>CFO, PT Sejahtera Abadi</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Layanan transfer pricing dari SMACO sangat komprehensif. Dokumentasi mereka memenuhi standar internasional dan peraturan domestik."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">RH</div>
-                        <div>
-                            <h4>Rudi Hartono</h4>
-                            <span>Tax Director, Multinational Co.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-box">
-                <div class="cta-content">
-                    <h2>Siap Mengoptimalkan Pajak Bisnis Anda?</h2>
-                    <p>Konsultasi awal gratis bersama tim ahli kami. Mari diskusikan kebutuhan pajak Anda hari ini.</p>
-                </div>
-                <div class="cta-actions">
-                    <a href="#contact" class="btn btn-light"><i class="fas fa-calendar-check"></i> Jadwalkan Konsultasi</a>
-                    <a href="tel:+622112345678" class="btn btn-outline-light"><i class="fas fa-phone"></i> Hubungi Kami</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Hubungi Kami</span>
-                <h2 class="section-title">Mulai <span class="text-gradient">Konsultasi</span> Hari Ini</h2>
-                <p class="section-description">
-                    Tim kami siap membantu Anda. Isi form di bawah atau hubungi kami melalui kontak yang tersedia.
-                </p>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div>
-                            <h4>Alamat Kantor</h4>
-                            <p>Jl. Sudirman Kav. 25, Gedung Plaza Tower Lt. 18<br>Jakarta Selatan 12190, Indonesia</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                        <div>
-                            <h4>Telepon</h4>
-                            <p>+62 21 1234 5678<br>+62 812 3456 7890 (WhatsApp)</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div>
-                            <h4>Email</h4>
-                            <p>info@smaco-tax.co.id<br>consult@smaco-tax.co.id</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
-                        <div>
-                            <h4>Jam Operasional</h4>
-                            <p>Senin - Jumat: 08.00 - 17.00 WIB<br>Sabtu: 09.00 - 13.00 WIB</p>
-                        </div>
-                    </div>
-                    <div class="contact-social">
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">Nama Lengkap *</label>
-                                <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email *</label>
-                                <input type="email" id="email" name="email" placeholder="email@perusahaan.com" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="phone">No. Telepon *</label>
-                                <input type="tel" id="phone" name="phone" placeholder="+62 812 xxxx xxxx" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="company">Perusahaan</label>
-                                <input type="text" id="company" name="company" placeholder="Nama perusahaan">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="service">Layanan yang Dibutuhkan *</label>
-                            <select id="service" name="service" required>
-                                <option value="">Pilih layanan</option>
-                                <option value="compliance">Tax Compliance</option>
-                                <option value="planning">Tax Planning</option>
-                                <option value="audit">Tax Audit & Review</option>
-                                <option value="dispute">Tax Dispute</option>
-                                <option value="transfer">Transfer Pricing</option>
-                                <option value="training">Tax Training</option>
-                                <option value="other">Lainnya</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Pesan *</label>
-                            <textarea id="message" name="message" rows="5" placeholder="Ceritakan kebutuhan pajak Anda..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-paper-plane"></i> Kirim Pesan
                         </button>
-                        <p class="form-note">* Konsultasi awal GRATIS. Kami akan menghubungi Anda dalam 24 jam.</p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+                        <button class="suggestion" data-prompt="Tulis fungsi JavaScript untuk debounce dengan TypeScript types dan jelaskan cara kerjanya.">
+                            <div class="suggestion-icon" style="--c1:#00d4ff;--c2:#22c55e"><i class="fas fa-code"></i></div>
+                            <div class="suggestion-text">
+                                <strong>Kode debounce + penjelasan</strong>
+                                <span>JavaScript / TypeScript dengan komentar</span>
+                            </div>
+                        </button>
+                        <button class="suggestion" data-prompt="Bantu saya menulis email profesional ke klien untuk meminta pembayaran invoice yang terlambat 14 hari, gunakan tone sopan tapi tegas.">
+                            <div class="suggestion-icon" style="--c1:#ff5cf7;--c2:#ff8c42"><i class="fas fa-envelope-open-text"></i></div>
+                            <div class="suggestion-text">
+                                <strong>Email profesional</strong>
+                                <span>Penagihan invoice yang sopan & tegas</span>
+                            </div>
+                        </button>
+                        <button class="suggestion" data-prompt="Jelaskan konsep machine learning dengan analogi yang mudah dipahami anak SMA, pakai 3 contoh nyata.">
+                            <div class="suggestion-icon" style="--c1:#ff8c42;--c2:#ffd166"><i class="fas fa-brain"></i></div>
+                            <div class="suggestion-text">
+                                <strong>Jelaskan dengan sederhana</strong>
+                                <span>Machine learning untuk anak SMA</span>
+                            </div>
+                        </button>
+                    </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col footer-about">
-                    <a href="#home" class="logo footer-logo">
-                        <div class="logo-icon">
-                            <i class="fas fa-leaf"></i>
+                    <div class="capability-row">
+                        <div class="capability">
+                            <i class="fas fa-bolt"></i>
+                            <span>Respon Streaming Real-time</span>
                         </div>
-                        <div class="logo-text">
-                            <span class="logo-name">SMACO</span>
-                            <span class="logo-tagline">Tax Advisory</span>
+                        <div class="capability">
+                            <i class="fas fa-shield-halved"></i>
+                            <span>Privasi di Browser Anda</span>
                         </div>
-                    </a>
-                    <p>Konsultan pajak profesional yang berkomitmen memberikan solusi perpajakan terbaik untuk bisnis Anda.</p>
-                    <div class="footer-social">
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <div class="capability">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Multi-Model AI</span>
+                        </div>
+                        <div class="capability">
+                            <i class="fas fa-microphone"></i>
+                            <span>Input Suara</span>
+                        </div>
                     </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Layanan</h4>
-                    <ul>
-                        <li><a href="#services">Tax Compliance</a></li>
-                        <li><a href="#services">Tax Planning</a></li>
-                        <li><a href="#services">Tax Audit & Review</a></li>
-                        <li><a href="#services">Tax Dispute</a></li>
-                        <li><a href="#services">Transfer Pricing</a></li>
-                        <li><a href="#services">Tax Training</a></li>
-                    </ul>
+
+                <div class="messages" id="messages" hidden>
+                    <!-- Pesan dinamis -->
                 </div>
-                <div class="footer-col">
-                    <h4>Perusahaan</h4>
-                    <ul>
-                        <li><a href="#about">Tentang Kami</a></li>
-                        <li><a href="#team">Tim</a></li>
-                        <li><a href="#why-us">Mengapa Kami</a></li>
-                        <li><a href="#contact">Kontak</a></li>
-                        <li><a href="#">Karir</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
+
+                <div class="scroll-bottom-wrap">
+                    <button class="scroll-bottom" id="scrollBottom" aria-label="Gulir ke bawah" title="Gulir ke bawah">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
                 </div>
-                <div class="footer-col">
-                    <h4>Kontak</h4>
-                    <ul class="footer-contact">
-                        <li><i class="fas fa-map-marker-alt"></i> Jl. Sudirman Kav. 25, Jakarta</li>
-                        <li><i class="fas fa-phone"></i> +62 21 1234 5678</li>
-                        <li><i class="fas fa-envelope"></i> info@smaco-tax.co.id</li>
-                    </ul>
-                </div>
+            </section>
+
+            <!-- Composer -->
+            <footer class="composer-wrap">
+                <form class="composer" id="composer" autocomplete="off">
+                    <div class="composer-toolbar">
+                        <button type="button" class="tool-btn" id="attachBtn" title="Lampirkan file">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button type="button" class="tool-btn" id="micBtn" title="Input suara">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <input type="file" id="fileInput" hidden accept="image/*,.pdf,.txt,.md,.json,.csv">
+                    </div>
+
+                    <textarea
+                        id="composerInput"
+                        class="composer-input"
+                        rows="1"
+                        placeholder="Tanyakan apa saja ke Lyps AI..."
+                        aria-label="Pesan ke Lyps AI"
+                    ></textarea>
+
+                    <div class="composer-actions">
+                        <span class="composer-hint" id="composerHint"><kbd>Enter</kbd> kirim · <kbd>Shift</kbd>+<kbd>Enter</kbd> baris baru</span>
+                        <button type="submit" class="send-btn" id="sendBtn" disabled aria-label="Kirim">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button type="button" class="stop-btn" id="stopBtn" hidden aria-label="Hentikan">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="legal-note">Lyps AI dapat membuat kesalahan. Verifikasi info penting. Powered by <a href="https://puter.com" target="_blank" rel="noopener">Puter</a>.</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Model Picker -->
+    <div class="picker" id="modelPicker" hidden role="listbox" aria-label="Pilih model">
+        <div class="picker-header">
+            <h3>Pilih Model AI</h3>
+            <p>Setiap model punya keahlian berbeda. Coba dan rasakan bedanya.</p>
+        </div>
+        <div class="picker-list" id="modelList"></div>
+    </div>
+
+    <!-- Persona Picker -->
+    <div class="picker persona-picker" id="personaPicker" hidden role="listbox" aria-label="Pilih persona">
+        <div class="picker-header">
+            <h3>Gaya Respon</h3>
+            <p>Ubah cara Lyps AI berbicara dengan Anda.</p>
+        </div>
+        <div class="picker-list" id="personaList"></div>
+    </div>
+
+    <!-- Modal: Shortcuts -->
+    <div class="modal" id="shortcutsModal" hidden>
+        <div class="modal-backdrop" data-close></div>
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3><i class="fas fa-keyboard"></i> Pintasan Keyboard</h3>
+                <button class="icon-btn" data-close aria-label="Tutup"><i class="fas fa-times"></i></button>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 SMACO Tax Advisory Services. All rights reserved.</p>
-                <ul class="footer-legal">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                    <li><a href="#">Disclaimer</a></li>
-                </ul>
+            <div class="shortcut-grid">
+                <div class="shortcut"><span>Chat baru</span><kbd>Ctrl</kbd><kbd>K</kbd></div>
+                <div class="shortcut"><span>Fokus ke input</span><kbd>/</kbd></div>
+                <div class="shortcut"><span>Kirim pesan</span><kbd>Enter</kbd></div>
+                <div class="shortcut"><span>Baris baru</span><kbd>Shift</kbd><kbd>Enter</kbd></div>
+                <div class="shortcut"><span>Buka pintasan</span><kbd>Ctrl</kbd><kbd>/</kbd></div>
+                <div class="shortcut"><span>Toggle tema</span><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>L</kbd></div>
+                <div class="shortcut"><span>Toggle sidebar</span><kbd>Ctrl</kbd><kbd>B</kbd></div>
+                <div class="shortcut"><span>Hentikan respon</span><kbd>Esc</kbd></div>
             </div>
         </div>
-    </footer>
+    </div>
 
-    <!-- WhatsApp Floating -->
-    <a href="https://wa.me/6281234567890" class="whatsapp-float" aria-label="Chat WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Back to Top -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- Toast -->
+    <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
     <script src="script.js"></script>
 </body>
