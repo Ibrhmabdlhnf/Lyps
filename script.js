@@ -957,13 +957,16 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
         // Footer
         els.exportBtn.addEventListener('click', exportCurrent);
         els.clearAllBtn.addEventListener('click', clearAllConversations);
-        els.shortcutsBtn.addEventListener('click', () => { els.shortcutsModal.hidden = false; });
+        els.shortcutsBtn.addEventListener('click', () => { els.shortcutsModal.classList.add('is-open'); });
         els.themeToggle.addEventListener('click', toggleTheme);
         els.shareBtn.addEventListener('click', shareCurrent);
 
-        // Modal close
-        els.shortcutsModal.querySelectorAll('[data-close]').forEach(b => {
-            b.addEventListener('click', () => { els.shortcutsModal.hidden = true; });
+        // Modal close — pakai event delegation di level document supaya tombol X & backdrop selalu kebaca
+        document.addEventListener('click', (e) => {
+            const closer = e.target.closest('[data-close]');
+            if (!closer) return;
+            const modal = closer.closest('.modal');
+            if (modal) modal.classList.remove('is-open');
         });
 
         // Pickers
@@ -1032,13 +1035,13 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
             // Ctrl+B: toggle sidebar
             else if (meta && e.key.toLowerCase() === 'b') { e.preventDefault(); els.app.classList.toggle('sidebar-collapsed'); }
             // Ctrl+/ : open shortcuts
-            else if (meta && e.key === '/') { e.preventDefault(); els.shortcutsModal.hidden = false; }
+            else if (meta && e.key === '/') { e.preventDefault(); els.shortcutsModal.classList.add('is-open'); }
             // Ctrl+Shift+L: toggle theme
             else if (meta && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); toggleTheme(); }
             // Esc: stop streaming or close modals
             else if (e.key === 'Escape') {
                 if (state.abortStream) { state.abortStream(); toast('Respon dihentikan', 'info', 1200); }
-                else if (!els.shortcutsModal.hidden) els.shortcutsModal.hidden = true;
+                else if (els.shortcutsModal.classList.contains('is-open')) els.shortcutsModal.classList.remove('is-open');
                 else if (els.modelPicker.classList.contains('open') || els.personaPicker.classList.contains('open')) closePickers();
             }
             // "/" : focus input
