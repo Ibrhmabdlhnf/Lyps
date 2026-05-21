@@ -8,11 +8,11 @@
 
     /* Expose a global modal closer as a defensive fallback —
        so inline onclick handlers always work regardless of init timing. */
-    window.LypsCloseModal = function(id) {
+    window.HanifCloseModal = function(id) {
         const el = id ? document.getElementById(id) : document.querySelector('.modal.is-open');
         if (el) el.classList.remove('is-open');
     };
-    window.LypsOpenModal = function(id) {
+    window.HanifOpenModal = function(id) {
         const el = document.getElementById(id);
         if (el) el.classList.add('is-open');
     };
@@ -105,7 +105,7 @@
             desc: 'Akurat, terstruktur, dan jelas',
             icon: 'fa-wand-magic-sparkles',
             c1: '#7c5cff', c2: '#00d4ff',
-            system: `Kamu adalah Lyps AI — asisten cerdas generasi baru yang menjawab dengan kualitas premium yang melampaui asisten AI lainnya. Standar respon kamu:
+            system: `Kamu adalah Hanif AI — asisten cerdas generasi baru yang menjawab dengan kualitas premium yang melampaui asisten AI lainnya. Standar respon kamu:
 
 1. **Selalu mulai dengan jawaban langsung** — tidak bertele-tele, tidak meminta maaf, tidak basa-basi.
 2. **Format yang indah & mudah dibaca**:
@@ -127,7 +127,7 @@ Tujuanmu: setiap respon harus terasa seperti dari pakar pribadi yang ramah, tepa
             desc: 'Imajinatif, ekspresif, penuh warna',
             icon: 'fa-palette',
             c1: '#ff5cf7', c2: '#ff8c42',
-            system: `Kamu Lyps AI mode Kreatif — asisten dengan imajinasi liar dan jiwa seniman. Kamu menulis dengan metafora yang segar, sudut pandang yang tak terduga, dan rasa yang menyentuh. Pakai gaya bahasa puitis tapi tetap jelas. Format respon dengan indah (heading, bullet, kutipan). Kalau diminta brainstorm, beri 3-5 ide tak biasa dengan penjelasan singkat. Bahasa Indonesia natural & ekspresif. Tutup dengan kalimat yang menginspirasi.`
+            system: `Kamu Hanif AI mode Kreatif — asisten dengan imajinasi liar dan jiwa seniman. Kamu menulis dengan metafora yang segar, sudut pandang yang tak terduga, dan rasa yang menyentuh. Pakai gaya bahasa puitis tapi tetap jelas. Format respon dengan indah (heading, bullet, kutipan). Kalau diminta brainstorm, beri 3-5 ide tak biasa dengan penjelasan singkat. Bahasa Indonesia natural & ekspresif. Tutup dengan kalimat yang menginspirasi.`
         },
         {
             id: 'precise',
@@ -135,7 +135,7 @@ Tujuanmu: setiap respon harus terasa seperti dari pakar pribadi yang ramah, tepa
             desc: 'Singkat, padat, fakta saja',
             icon: 'fa-bullseye',
             c1: '#22c55e', c2: '#00d4ff',
-            system: `Kamu Lyps AI mode Presisi — asisten teknis yang menjawab seperti dokumen referensi. Standar:
+            system: `Kamu Hanif AI mode Presisi — asisten teknis yang menjawab seperti dokumen referensi. Standar:
 - Respon singkat & padat, tanpa basa-basi
 - Pakai bullet points & numbered list untuk struktur
 - Kode dalam code block dengan bahasa yang tepat
@@ -152,7 +152,7 @@ Tujuan: efisiensi maksimum tanpa mengorbankan kelengkapan informasi penting.`
             desc: 'Pakar coding & arsitektur software',
             icon: 'fa-code',
             c1: '#00d4ff', c2: '#7c5cff',
-            system: `Kamu Lyps AI mode Coder — senior software engineer dengan 15+ tahun pengalaman. Standar respon:
+            system: `Kamu Hanif AI mode Coder — senior software engineer dengan 15+ tahun pengalaman. Standar respon:
 
 1. **Selalu sertakan kode lengkap yang bisa dijalankan**, bukan pseudocode
 2. **Pilih bahasa & framework modern**: TypeScript > JavaScript, gunakan ES modules, async/await
@@ -173,7 +173,7 @@ Bahasa Indonesia untuk penjelasan, kode tetap dalam English. Buat user merasa be
             desc: 'Sabar menjelaskan dengan analogi',
             icon: 'fa-graduation-cap',
             c1: '#ffd166', c2: '#ff8c42',
-            system: `Kamu Lyps AI mode Tutor — guru pribadi yang sabar dan inspiratif. Cara mengajar:
+            system: `Kamu Hanif AI mode Tutor — guru pribadi yang sabar dan inspiratif. Cara mengajar:
 
 1. **Mulai dengan analogi sehari-hari** sebelum konsep teknis
 2. **Bangun bertahap**: dari yang familiar ke yang baru
@@ -194,7 +194,7 @@ Bahasa Indonesia natural, hangat, tidak menggurui. Buat user merasa pintar setel
             desc: 'Strategis, profesional, ROI-fokus',
             icon: 'fa-briefcase',
             c1: '#7c5cff', c2: '#22c55e',
-            system: `Kamu Lyps AI mode Bisnis — konsultan strategi dengan jam terbang McKinsey/BCG. Standar respon:
+            system: `Kamu Hanif AI mode Bisnis — konsultan strategi dengan jam terbang McKinsey/BCG. Standar respon:
 
 1. **Framework dulu**: pakai struktur yang relevan (SWOT, Porter's 5, AIDA, RACE, dll)
 2. **Data-driven**: sebutkan asumsi dan metrik yang harus dipantau
@@ -617,7 +617,7 @@ Bahasa Indonesia formal-profesional. Tutup dengan "Next steps" konkret 3 poin.`
 
         const meta = isUser
             ? `<div class="msg-meta"><span>${fmtTime(m.ts)}</span><strong>Anda</strong></div>`
-            : `<div class="msg-meta"><strong>Lyps AI</strong>${model ? `<span class="msg-model">${escapeHtml(model.name)}</span>` : ''}<span>${fmtTime(m.ts)}</span></div>`;
+            : `<div class="msg-meta"><strong>Hanif AI</strong>${model ? `<span class="msg-model">${escapeHtml(model.name)}</span>` : ''}<span>${fmtTime(m.ts)}</span></div>`;
 
         const actions = !isUser && m.content ? `
             <div class="msg-actions">
@@ -933,9 +933,9 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
     function exportCurrent() {
         const conv = getCurrent();
         if (!conv || !conv.messages.length) { toast('Tidak ada percakapan untuk diekspor', 'info'); return; }
-        const lines = [`# ${conv.title}`, `_${fmtDay(conv.createdAt)} — Lyps AI_`, ''];
+        const lines = [`# ${conv.title}`, `_${fmtDay(conv.createdAt)} — Hanif AI_`, ''];
         conv.messages.forEach(m => {
-            lines.push(`## ${m.role === 'user' ? '🙋 Anda' : '🤖 Lyps AI'} _(${fmtTime(m.ts)})_`);
+            lines.push(`## ${m.role === 'user' ? '🙋 Anda' : '🤖 Hanif AI'} _(${fmtTime(m.ts)})_`);
             lines.push(m.content);
             lines.push('');
         });
@@ -951,7 +951,7 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
     function shareCurrent() {
         const conv = getCurrent();
         if (!conv || !conv.messages.length) { toast('Tidak ada percakapan untuk dibagikan', 'info'); return; }
-        const text = conv.messages.map(m => `${m.role === 'user' ? 'Anda' : 'Lyps AI'}: ${m.content}`).join('\n\n');
+        const text = conv.messages.map(m => `${m.role === 'user' ? 'Anda' : 'Hanif AI'}: ${m.content}`).join('\n\n');
         if (navigator.share) {
             navigator.share({ title: conv.title, text }).catch(() => {});
         } else {
