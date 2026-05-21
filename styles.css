@@ -1148,32 +1148,112 @@ kbd {
 }
 .legal-note a { color: var(--c-primary-2); text-decoration: underline; text-underline-offset: 2px; }
 
-/* Attachment chip */
+/* Attachment chip — di atas composer */
+.attachment-chip-wrap {
+    max-width: var(--composer-max);
+    margin: 0 auto 6px;
+    padding: 0 0;
+    animation: fadeUp .25s ease;
+}
 .attachment-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px 8px 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--sh-sm);
+    max-width: 360px;
+}
+.attachment-chip i.fa-image,
+.attachment-chip i.fa-file-lines {
+    color: var(--c-primary);
+    font-size: 1.1rem;
+    width: 36px; height: 36px;
+    display: grid; place-items: center;
+    background: var(--hover);
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+.attachment-chip .ac-thumb {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.attachment-chip .ac-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.attachment-chip .ac-name {
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 220px;
+}
+.attachment-chip .ac-meta {
+    font-size: .7rem;
+    color: var(--text-3);
+}
+.attachment-chip .ac-remove {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--text-3);
+    font-size: .8rem;
+    transition: all var(--t-fast);
+    flex-shrink: 0;
+}
+.attachment-chip .ac-remove:hover {
+    background: rgba(239,68,68,.15);
+    color: var(--c-danger);
+}
+
+/* Image/file preview di dalam pesan user */
+.msg-attachment {
+    margin-bottom: 8px;
+}
+.msg-attachment.image img {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: block;
+}
+.msg-attachment.file {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 6px 10px;
     background: var(--hover);
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: .8rem;
-    color: var(--text);
-    margin: 0 0 8px 8px;
-    max-width: 320px;
-    animation: fadeUp .25s ease;
+    font-size: .82rem;
+    color: var(--text-2);
 }
-.attachment-chip i.fa-paperclip { color: var(--c-primary); }
-.attachment-chip .ac-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.attachment-chip button {
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    display: grid; place-items: center;
-    color: var(--text-3);
-    transition: all var(--t-fast);
-    margin-left: 2px;
+.msg-attachment.file i {
+    color: var(--c-primary);
 }
-.attachment-chip button:hover { background: var(--hover-strong); color: var(--c-danger); }
+
+/* Mic button active state — pulsing red */
+.tool-btn.active {
+    color: #fff !important;
+    background: var(--c-danger) !important;
+    animation: micPulse 1.4s ease-in-out infinite;
+}
+@keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.5); }
+    50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}
 
 /* ============================================================
    PICKERS (Model & Persona)
