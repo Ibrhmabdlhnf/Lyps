@@ -6,6 +6,28 @@
 (() => {
     'use strict';
 
+    /* Expose a global modal closer as a defensive fallback —
+       so inline onclick handlers always work regardless of init timing. */
+    window.LypsCloseModal = function(id) {
+        const el = id ? document.getElementById(id) : document.querySelector('.modal.is-open');
+        if (el) el.classList.remove('is-open');
+    };
+    window.LypsOpenModal = function(id) {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('is-open');
+    };
+
+    /* Esc key — wired immediately, doesn't wait for DOMContentLoaded */
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const openModal = document.querySelector('.modal.is-open');
+            if (openModal) {
+                openModal.classList.remove('is-open');
+                e.stopPropagation();
+            }
+        }
+    }, true); // capture phase to win over other handlers
+
     /* ================================================================
        CONFIGURATION
        ================================================================ */

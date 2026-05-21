@@ -1331,6 +1331,17 @@ kbd {
 }
 .modal-head h3 i { color: var(--c-primary); }
 
+/* Tombol X di header modal — pastikan z-index tinggi & area klik jelas */
+.modal-close-btn {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+}
+.modal-close-btn:hover {
+    background: rgba(239,68,68,.15) !important;
+    color: var(--c-danger) !important;
+}
+
 .shortcut-grid {
     padding: 16px 20px 20px;
     display: grid;

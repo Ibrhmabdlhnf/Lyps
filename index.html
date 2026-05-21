@@ -274,11 +274,11 @@
 
     <!-- Modal: Shortcuts -->
     <div class="modal" id="shortcutsModal">
-        <div class="modal-backdrop" data-close></div>
+        <div class="modal-backdrop" data-close onclick="document.getElementById('shortcutsModal').classList.remove('is-open')"></div>
         <div class="modal-card">
             <div class="modal-head">
                 <h3><i class="fas fa-keyboard"></i> Pintasan Keyboard</h3>
-                <button class="icon-btn" data-close aria-label="Tutup"><i class="fas fa-times"></i></button>
+                <button type="button" class="icon-btn modal-close-btn" data-close aria-label="Tutup" onclick="document.getElementById('shortcutsModal').classList.remove('is-open')"><i class="fas fa-times" style="pointer-events:none"></i></button>
             </div>
             <div class="shortcut-grid">
                 <div class="shortcut"><span>Chat baru</span><kbd>Ctrl</kbd><kbd>K</kbd></div>
