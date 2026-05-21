@@ -298,8 +298,17 @@ Bahasa Indonesia formal-profesional. Tutup dengan "Next steps" konkret 3 poin.`
        ================================================================ */
     function saveState() {
         try {
+            // Strip large dataUrls (image base64) before saving — too big for localStorage
+            const conversations = state.conversations.map(c => ({
+                ...c,
+                messages: c.messages.map(m => {
+                    if (!m.attachmentDataUrl) return m;
+                    const { attachmentDataUrl, ...rest } = m;
+                    return rest;
+                })
+            }));
             const data = {
-                conversations: state.conversations,
+                conversations,
                 currentId: state.currentId,
                 modelId: state.modelId,
                 personaId: state.personaId
@@ -607,12 +616,28 @@ Bahasa Indonesia formal-profesional. Tutup dengan "Next steps" konkret 3 poin.`
     }
     function renderMessageHTML(m, isLast) {
         const isUser = m.role === 'user';
-        const avatarChar = isUser ? '<i class="fas fa-user"></i>' : 'L';
+        const avatarChar = isUser ? '<i class="fas fa-user"></i>' : 'H';
         const persona = PERSONAS.find(p => p.id === (m.personaId || state.personaId));
         const model = MODELS.find(mm => mm.id === (m.modelId || state.modelId));
 
+        // Attachment preview (only for user messages)
+        let attHTML = '';
+        if (isUser && m.attachment) {
+            if (m.attachment.kind === 'image' && m.attachmentDataUrl) {
+                attHTML = `<div class="msg-attachment image">
+                    <img src="${m.attachmentDataUrl}" alt="${escapeHtml(m.attachment.name)}" loading="lazy">
+                </div>`;
+            } else {
+                const icon = m.attachment.kind === 'image' ? 'fa-image' : 'fa-file-lines';
+                attHTML = `<div class="msg-attachment file">
+                    <i class="fas ${icon}"></i>
+                    <span>${escapeHtml(m.attachment.name)}</span>
+                </div>`;
+            }
+        }
+
         const bubbleHTML = isUser
-            ? `<div class="msg-bubble">${escapeHtml(m.content).replace(/\n/g, '<br>')}</div>`
+            ? `<div class="msg-bubble">${attHTML}${m.content ? escapeHtml(m.content).replace(/\n/g, '<br>') : ''}</div>`
             : `<div class="msg-bubble">${m.content ? renderMarkdown(m.content) : '<div class="thinking"><span></span><span></span><span></span></div>'}</div>`;
 
         const meta = isUser
@@ -683,17 +708,30 @@ Bahasa Indonesia formal-profesional. Tutup dengan "Next steps" konkret 3 poin.`
        ================================================================ */
     async function sendMessage(text) {
         text = (text || '').trim();
-        if (!text || state.streaming) return;
+        const att = state.attachment;
+        if ((!text && !att) || state.streaming) return;
 
         let conv = getCurrent();
         if (!conv) conv = newConversation();
 
         // Idx assignment
         const userIdx = conv.messages.length;
-        conv.messages.push({ role: 'user', content: text, ts: Date.now(), idx: userIdx });
+        const userMsg = { role: 'user', content: text, ts: Date.now(), idx: userIdx };
+        if (att) {
+            userMsg.attachment = { name: att.name, type: att.type, kind: att.kind };
+            if (att.kind === 'text') userMsg.attachmentText = att.text;
+            if (att.kind === 'image') userMsg.attachmentDataUrl = att.dataUrl;
+        }
+        conv.messages.push(userMsg);
 
-        if (conv.messages.length === 1) conv.title = autoTitleFromMessage(text);
+        if (conv.messages.length === 1) {
+            conv.title = autoTitleFromMessage(text || (att ? att.name : 'Lampiran'));
+        }
         conv.updatedAt = Date.now();
+
+        // Clear attachment from state after attaching to message
+        state.attachment = null;
+        renderAttachmentChip();
 
         const aiIdx = conv.messages.length;
         conv.messages.push({
@@ -733,7 +771,26 @@ Bahasa Indonesia formal-profesional. Tutup dengan "Next steps" konkret 3 poin.`
         const msgs = [{ role: 'system', content: persona.system }];
         for (let i = 0; i < uptoIdx; i++) {
             const m = conv.messages[i];
-            if (!m || !m.content) continue;
+            if (!m) continue;
+            // Image attachment → multimodal content array
+            if (m.role === 'user' && m.attachment && m.attachment.kind === 'image' && m.attachmentDataUrl) {
+                msgs.push({
+                    role: 'user',
+                    content: [
+                        { type: 'text', text: m.content || 'Tolong analisa gambar ini.' },
+                        { type: 'image_url', image_url: { url: m.attachmentDataUrl } }
+                    ]
+                });
+                continue;
+            }
+            // Text file attachment → prepend file content
+            if (m.role === 'user' && m.attachment && m.attachment.kind === 'text' && m.attachmentText) {
+                const filePart = `[Lampiran: ${m.attachment.name}]\n\`\`\`\n${m.attachmentText}\n\`\`\`\n\n`;
+                msgs.push({ role: 'user', content: filePart + (m.content || 'Tolong analisa file ini.') });
+                continue;
+            }
+            // Plain message
+            if (!m.content) continue;
             msgs.push({ role: m.role, content: m.content });
         }
         return msgs;
@@ -884,13 +941,71 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
     }
 
     /* ================================================================
+       FILE ATTACHMENT
+       ================================================================ */
+    function fileToDataUrl(file) {
+        return new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result);
+            r.onerror = () => reject(r.error || new Error('FileReader error'));
+            r.readAsDataURL(file);
+        });
+    }
+
+    function renderAttachmentChip() {
+        const existing = document.getElementById('attachmentChipWrap');
+        if (!state.attachment) {
+            if (existing) existing.remove();
+            return;
+        }
+        const att = state.attachment;
+        const wrap = existing || document.createElement('div');
+        wrap.id = 'attachmentChipWrap';
+        wrap.className = 'attachment-chip-wrap';
+
+        const icon = att.kind === 'image' ? 'fa-image' : 'fa-file-lines';
+        const preview = (att.kind === 'image' && att.dataUrl)
+            ? `<img class="ac-thumb" src="${att.dataUrl}" alt="">`
+            : `<i class="fas ${icon}"></i>`;
+        const sizeKB = (att.size / 1024).toFixed(1);
+
+        wrap.innerHTML = `
+            <div class="attachment-chip">
+                ${preview}
+                <div class="ac-info">
+                    <span class="ac-name">${escapeHtml(att.name)}</span>
+                    <span class="ac-meta">${sizeKB} KB · ${att.kind === 'image' ? 'Gambar' : 'Teks'}</span>
+                </div>
+                <button type="button" class="ac-remove" aria-label="Hapus lampiran" onclick="window.HanifClearAttachment && window.HanifClearAttachment()">
+                    <i class="fas fa-times" style="pointer-events:none"></i>
+                </button>
+            </div>
+        `;
+
+        if (!existing) {
+            // Insert above the composer
+            els.composer.parentNode.insertBefore(wrap, els.composer);
+        }
+    }
+
+    // Global so the inline onclick works
+    window.HanifClearAttachment = function() {
+        state.attachment = null;
+        renderAttachmentChip();
+    };
+
+    /* ================================================================
        VOICE INPUT
        ================================================================ */
     let recognition = null;
     function initVoice() {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SR) {
-            els.micBtn.style.display = 'none';
+            // Browser tidak support — tampilkan tooltip, jangan sembunyikan
+            els.micBtn.title = 'Browser kamu tidak support voice input. Coba pakai Chrome.';
+            els.micBtn.addEventListener('click', () => {
+                toast('Browser kamu belum support voice input. Pakai Chrome/Edge ya.', 'info', 2400);
+            });
             return;
         }
         recognition = new SR();
@@ -899,7 +1014,12 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
         recognition.interimResults = true;
 
         let finalTranscript = '';
-        recognition.onstart = () => { finalTranscript = els.composerInput.value; els.micBtn.classList.add('active'); };
+        recognition.onstart = () => {
+            finalTranscript = els.composerInput.value;
+            if (finalTranscript && !finalTranscript.endsWith(' ')) finalTranscript += ' ';
+            els.micBtn.classList.add('active');
+            els.micBtn.title = 'Klik untuk berhenti';
+        };
         recognition.onresult = (e) => {
             let interim = '';
             for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -911,18 +1031,30 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
             updateSendDisabled();
             autoResizeComposer();
         };
-        recognition.onerror = () => {
+        recognition.onerror = (e) => {
             els.micBtn.classList.remove('active');
-            toast('Tidak bisa mendengar suara', 'error');
+            const msg = e.error === 'not-allowed'
+                ? 'Akses mikrofon ditolak. Izinkan di pengaturan browser.'
+                : e.error === 'no-speech'
+                    ? 'Tidak ada suara terdeteksi'
+                    : 'Tidak bisa mendengar suara';
+            toast(msg, 'error');
         };
-        recognition.onend = () => els.micBtn.classList.remove('active');
+        recognition.onend = () => {
+            els.micBtn.classList.remove('active');
+            els.micBtn.title = 'Input suara';
+        };
 
         els.micBtn.addEventListener('click', () => {
             if (els.micBtn.classList.contains('active')) {
-                recognition.stop();
+                try { recognition.stop(); } catch (e) {}
             } else {
-                try { recognition.start(); toast('Silakan bicara...', 'info', 1400); }
-                catch (e) { /* ignore */ }
+                try {
+                    recognition.start();
+                    toast('🎤 Silakan bicara...', 'info', 1600);
+                } catch (e) {
+                    console.warn('Voice start error:', e);
+                }
             }
         });
     }
@@ -1040,9 +1172,53 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
             toast('Respon dihentikan', 'info', 1400);
         });
 
-        // Attach (placeholder UI)
+        // Attachment: open file picker when paperclip clicked
         els.attachBtn.addEventListener('click', () => {
-            toast('Lampiran segera hadir 📎', 'info', 1800);
+            els.fileInput.click();
+        });
+
+        els.fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            // Limit: 5MB for images, 1MB for text
+            const maxSize = file.type.startsWith('image/') ? 5 * 1024 * 1024 : 1 * 1024 * 1024;
+            if (file.size > maxSize) {
+                toast(`File terlalu besar (max ${file.type.startsWith('image/') ? '5MB' : '1MB'})`, 'error');
+                e.target.value = '';
+                return;
+            }
+
+            try {
+                const att = { name: file.name, type: file.type, size: file.size };
+
+                if (file.type.startsWith('image/')) {
+                    att.kind = 'image';
+                    att.dataUrl = await fileToDataUrl(file);
+                } else if (
+                    file.type.startsWith('text/') ||
+                    /\.(txt|md|json|csv|html|css|js|jsx|ts|tsx|py|java|c|cpp|h|hpp|go|rs|rb|php|sql|yaml|yml|xml|sh)$/i.test(file.name)
+                ) {
+                    att.kind = 'text';
+                    att.text = await file.text();
+                    if (att.text.length > 50000) {
+                        att.text = att.text.slice(0, 50000) + '\n\n[... file dipotong, terlalu panjang]';
+                    }
+                } else {
+                    toast('Tipe file ini belum didukung. Coba gambar atau file teks.', 'error');
+                    e.target.value = '';
+                    return;
+                }
+
+                state.attachment = att;
+                renderAttachmentChip();
+                toast(`Lampiran: ${att.name}`, 'success', 1600);
+            } catch (err) {
+                console.error('File read error:', err);
+                toast('Gagal membaca file', 'error');
+            } finally {
+                e.target.value = ''; // reset input supaya bisa pilih file yang sama lagi
+            }
         });
 
         // Scroll
@@ -1106,6 +1282,7 @@ ${errMsg.includes('Permission') || errMsg.includes('auth') || errMsg.includes('s
         if (window.innerWidth <= 920) els.app.classList.add('sidebar-collapsed');
 
         wireEvents();
+        initVoice();
 
         // Render initial state
         if (!getCurrent()) {
