@@ -17,10 +17,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 
+    <!-- Core libraries -->
     <script src="https://js.puter.com/v2/"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+
+    <!-- File parser libraries: PDF, Excel, Word -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs" type="module"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.0/mammoth.browser.min.js"></script>
+    <script>
+        // Configure pdf.js worker (using legacy build for wider compatibility)
+        (function loadPdfJs() {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js';
+            s.onload = function() {
+                if (window.pdfjsLib) {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+                }
+            };
+            document.head.appendChild(s);
+        })();
+    </script>
 </head>
 <body>
     <!-- Aurora Background -->
@@ -123,6 +142,9 @@
                 </div>
 
                 <div class="topbar-actions">
+                    <button class="icon-btn" id="promptLibBtn" title="Pustaka Prompt (Ctrl+P)">
+                        <i class="fas fa-book-open"></i>
+                    </button>
                     <button class="icon-btn" id="shareBtn" title="Bagikan">
                         <i class="fas fa-share-nodes"></i>
                     </button>
@@ -187,22 +209,12 @@
                     </div>
 
                     <div class="capability-row">
-                        <div class="capability">
-                            <i class="fas fa-bolt"></i>
-                            <span>Respon Streaming Real-time</span>
-                        </div>
-                        <div class="capability">
-                            <i class="fas fa-shield-halved"></i>
-                            <span>Privasi di Browser Anda</span>
-                        </div>
-                        <div class="capability">
-                            <i class="fas fa-layer-group"></i>
-                            <span>Multi-Model AI</span>
-                        </div>
-                        <div class="capability">
-                            <i class="fas fa-microphone"></i>
-                            <span>Input Suara</span>
-                        </div>
+                        <div class="capability"><i class="fas fa-bolt"></i><span>Streaming Real-time</span></div>
+                        <div class="capability"><i class="fas fa-image"></i><span>Buat Gambar AI</span></div>
+                        <div class="capability"><i class="fas fa-file-pdf"></i><span>Baca PDF/Excel/Word</span></div>
+                        <div class="capability"><i class="fas fa-microphone"></i><span>Voice Input & Suara</span></div>
+                        <div class="capability"><i class="fas fa-book-open"></i><span>Pustaka Prompt</span></div>
+                        <div class="capability"><i class="fas fa-layer-group"></i><span>8 Model AI</span></div>
                     </div>
                     <p class="footer-tagline">Engineered for clarity. Built for trust.</p>
                 </div>
@@ -220,15 +232,30 @@
 
             <!-- Composer -->
             <footer class="composer-wrap">
+                <!-- Image mode banner -->
+                <div class="mode-banner" id="modeBanner" hidden>
+                    <i class="fas fa-image"></i>
+                    <span><strong>Mode Buat Gambar aktif</strong> — tulis deskripsi gambar yang ingin dibuat</span>
+                    <button type="button" class="mode-banner-close" onclick="window.HanifToggleImageMode && window.HanifToggleImageMode(false)" title="Kembali ke mode chat">
+                        <i class="fas fa-times" style="pointer-events:none"></i>
+                    </button>
+                </div>
+
                 <form class="composer" id="composer" autocomplete="off">
                     <div class="composer-toolbar">
-                        <button type="button" class="tool-btn" id="attachBtn" title="Lampirkan file">
+                        <button type="button" class="tool-btn" id="attachBtn" title="Lampirkan file (PDF, Excel, Word, gambar, teks)">
                             <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button type="button" class="tool-btn" id="imageBtn" title="Mode Buat Gambar AI">
+                            <i class="fas fa-image"></i>
                         </button>
                         <button type="button" class="tool-btn" id="micBtn" title="Input suara">
                             <i class="fas fa-microphone"></i>
                         </button>
-                        <input type="file" id="fileInput" hidden accept="image/*,.pdf,.txt,.md,.json,.csv">
+                        <button type="button" class="tool-btn" id="composerPromptBtn" title="Pustaka Prompt">
+                            <i class="fas fa-book-open"></i>
+                        </button>
+                        <input type="file" id="fileInput" hidden accept="image/*,.pdf,.txt,.md,.json,.csv,.xlsx,.xls,.docx,.html,.css,.js,.ts,.tsx,.jsx,.py,.java,.c,.cpp,.go,.rs,.rb,.php,.sql,.yaml,.yml,.xml,.sh">
                     </div>
 
                     <textarea
@@ -283,6 +310,8 @@
             <div class="shortcut-grid">
                 <div class="shortcut"><span>Chat baru</span><kbd>Ctrl</kbd><kbd>K</kbd></div>
                 <div class="shortcut"><span>Fokus ke input</span><kbd>/</kbd></div>
+                <div class="shortcut"><span>Pustaka prompt</span><kbd>Ctrl</kbd><kbd>P</kbd></div>
+                <div class="shortcut"><span>Mode buat gambar</span><kbd>Ctrl</kbd><kbd>I</kbd></div>
                 <div class="shortcut"><span>Kirim pesan</span><kbd>Enter</kbd></div>
                 <div class="shortcut"><span>Baris baru</span><kbd>Shift</kbd><kbd>Enter</kbd></div>
                 <div class="shortcut"><span>Buka pintasan</span><kbd>Ctrl</kbd><kbd>/</kbd></div>
@@ -290,6 +319,23 @@
                 <div class="shortcut"><span>Toggle sidebar</span><kbd>Ctrl</kbd><kbd>B</kbd></div>
                 <div class="shortcut"><span>Hentikan respon</span><kbd>Esc</kbd></div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal: Prompt Library -->
+    <div class="modal modal-lg" id="promptLibModal">
+        <div class="modal-backdrop" data-close onclick="document.getElementById('promptLibModal').classList.remove('is-open')"></div>
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3><i class="fas fa-book-open"></i> Pustaka Prompt</h3>
+                <button type="button" class="icon-btn modal-close-btn" data-close aria-label="Tutup" onclick="document.getElementById('promptLibModal').classList.remove('is-open')"><i class="fas fa-times" style="pointer-events:none"></i></button>
+            </div>
+            <div class="prompt-lib-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="promptLibSearch" placeholder="Cari prompt... (mis: email, kode, belajar)" aria-label="Cari prompt">
+            </div>
+            <div class="prompt-lib-tabs" id="promptLibTabs"></div>
+            <div class="prompt-lib-list" id="promptLibList"></div>
         </div>
     </div>
 
